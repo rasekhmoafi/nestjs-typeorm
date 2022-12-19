@@ -10,9 +10,9 @@ import { UsersModule } from './users/users.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'testuser',
-      password: 'testuser123',
-      database: 'nestjs_mysql',
+      username: 'root',
+      password: 'admin',
+      database: 'nestjs_mysql_test',
       entities: [User],
       synchronize: true
     })
