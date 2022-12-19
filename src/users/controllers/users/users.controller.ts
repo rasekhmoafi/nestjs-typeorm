@@ -1,5 +1,8 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Put } from '@nestjs/common/decorators';
+import { Delete } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
+import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
 import { CreateUserPipePipe } from 'src/users/pipes/create-user-pipe/create-user-pipe.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
 
@@ -22,6 +25,17 @@ export class UsersController {
     @Post('create')
     @UsePipes(new ValidationPipe())
     createUser(@Body(CreateUserPipePipe) userData: CreateUserDto) {
-        return this.usersService.createUser(userData)
+        this.usersService.createUser(userData)
+    }
+
+    @Put(':id')
+    @UsePipes(new ValidationPipe())
+    updateUserById(@Param('id', ParseIntPipe) id: number, @Body() userData: UpdateUserDto) {
+        this.usersService.updateUser(id, userData)
+    }
+
+    @Delete(':id')
+    deleteUser(@Param('id', ParseIntPipe) id: number) {
+        this.usersService.deleteUser(id)
     }
 }

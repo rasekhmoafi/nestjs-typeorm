@@ -3,7 +3,7 @@ import { User } from 'src/typeorm/entities/User';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
-import { CreateUserParams } from 'src/users/utils/types';
+import { CreateUserParams, UpdateUserParams } from 'src/users/utils/types';
 
 @Injectable()
 export class UsersService {
@@ -11,28 +11,37 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  users: any = [
-    { username: 'rasekh', email: 'rasekh@gmail.com' },
-    { username: 'John', email: 'rasekh@gmail.com' },
-    { username: 'sali', email: 'rasekh@gmail.com' },
-    { username: 'james', email: 'rasekh@gmail.com' },
-  ];
 
-  getUsers() {
-    return this.users;
+  async getUsers() {
+    const users = await this.userRepository.find();
+    return users;
   }
-  getUserById(id: number) {
-    const user = this.users[id];
+
+  async getUserById(id: number) {
+    const user = await this.userRepository.findOneBy({ id })
     if (!user) {
       throw new HttpException('User Not Founded', HttpStatus.NOT_FOUND);
     }
     return user;
   }
-  createUser(userDetails: CreateUserParams) {
-    const newUser = this.userRepository.create({
+
+  async findUserByUsername(username: string) {
+    return await this.userRepository.findOneBy({ username });
+  }
+
+  async createUser(userDetails: CreateUserParams) {
+    const newUser = await this.userRepository.create({
       ...userDetails,
       createdAt: new Date()
     });
-    return this.userRepository.save(newUser)
+    return this.userRepository.save(newUser);
+  }
+
+  async updateUser(id: number, userData: UpdateUserParams) {
+    return await this.userRepository.update({id}, {...userData});
+  }
+
+  async deleteUser(id: number) {
+    return await this.userRepository.delete({id})
   }
 }
