@@ -4,7 +4,9 @@ import { Controller, Get, Param, Post, UsePipes, ValidationPipe, Body, ParseIntP
 import { PostsService } from 'src/posts/services/posts/posts.service';
 import { UpdatePostDto } from 'src/posts/dtos/UpdatePost.dto';
 import { CreatePostDto } from 'src/posts/dtos/CreatePost.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('posts')
 @Controller('posts')
 export class PostsController {
     constructor(

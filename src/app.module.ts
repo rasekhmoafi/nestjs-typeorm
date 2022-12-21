@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { Post } from './typeorm/entities/Post';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,15 +16,17 @@ import { AuthModule } from './auth/auth.module';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '123456',
+      password: 'admin',
       database: 'nestjs_mysql', 
       entities: [User, Profile, Post],
       synchronize: true
     }),
     PostsModule,
-    AuthModule
+    AuthModule,
+    ConfigModule.forRoot() //to access .env file
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule {}
+ 
